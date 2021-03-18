@@ -1,6 +1,8 @@
 from datetime import datetime
-import dynamic
+import brutal
 import greedy
+import dynamic
+import branchbound as bb
 
 
 def main():
@@ -13,6 +15,13 @@ def main():
 
     # Usage results
     results = {}
+
+    # Brutal search
+    timer = datetime.now()
+    result = brutal.brutal(I, w, v, K)
+    timer = str(datetime.now() - timer)
+
+    results['brutal'] = (result[2], timer)
 
     # Greedy algorithms
     for name in dir(greedy):
@@ -31,6 +40,17 @@ def main():
     timer = str(datetime.now() - timer)
 
     results['dynamic'] = (result[2], timer)
+
+    # Branch and Bound algorithms
+    for name in dir(bb):
+        if name[:1] != '_':
+            func = getattr(bb, name)
+
+            timer = datetime.now()
+            result = func(I, w, v, K)
+            timer = str(datetime.now() - timer)
+
+            results[name] = (result[2], timer)
 
     # Print results in decreasing order
     results = dict(
