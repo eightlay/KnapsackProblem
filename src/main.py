@@ -1,4 +1,6 @@
 from datetime import datetime
+import os
+import json
 import brutal
 import greedy
 import dynamic
@@ -6,22 +8,33 @@ import branchbound as bb
 
 
 def main():
-    # Test data
-    n = 7
-    I = list(range(n))
-    w = [2, 2, 2, 5, 5, 8, 3]
-    v = [1, 1, 1, 10, 10, 13, 7]
-    K = 10
+    # File to read data from
+    file_name = 'size1000.json'
+
+    # Path
+    path = os.getcwd()
+    path = os.path.abspath(path)
+    path = os.path.dirname(path)
+    path = os.path.join(path, 'data', file_name)
+
+    # Import data
+    with open(path) as f:
+        I, w, v, K = json.load(f).values()
 
     # Usage results
     results = {}
 
     # Brutal search
-    timer = datetime.now()
-    result = brutal.brutal(I, w, v, K)
-    timer = str(datetime.now() - timer)
+    # NOTE: 50 items takes 1,285,273,866 centuries to check each configuration,
+    # if each check takes 1 millisecond.
+    # So don't recommended if you're mortal.
 
-    results['brutal'] = (result[2], timer)
+    # timer = datetime.now()
+    # result = brutal.brutal(I, w, v, K)
+    # timer = str(datetime.now() - timer)
+
+    # results['brutal'] = (result[2], timer)
+    # print("brutal DONE")
 
     # Greedy algorithms
     for name in dir(greedy):
@@ -33,13 +46,19 @@ def main():
             timer = str(datetime.now() - timer)
 
             results[name] = (result[2], timer)
+            print(f"{name} DONE")
 
     # Dynamic programming
-    timer = datetime.now()
-    result = dynamic.dynamic(I, w, v, K)
-    timer = str(datetime.now() - timer)
+    for name in dir(dynamic):
+        if name[:1] != '_':
+            func = getattr(dynamic, name)
 
-    results['dynamic'] = (result[2], timer)
+            timer = datetime.now()
+            result = func(I, w, v, K)
+            timer = str(datetime.now() - timer)
+
+            results[name] = (result[2], timer)
+            print(f"{name} DONE")
 
     # Branch and Bound algorithms
     for name in dir(bb):
@@ -51,6 +70,7 @@ def main():
             timer = str(datetime.now() - timer)
 
             results[name] = (result[2], timer)
+            print(f"{name} DONE")
 
     # Print results in decreasing order
     results = dict(
