@@ -9,4 +9,4 @@ python dataGeneration.py [-h] -a \**smallest problem size*\*
 -s \**step to increment from a to b*\*
 -p \**path to save files*\*
 ## To solve problems from data folder
-python main.py
+python main.py [-h] -f \**name of file in data folder*\*

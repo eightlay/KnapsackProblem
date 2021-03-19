@@ -1,3 +1,4 @@
+import argparse
 from datetime import datetime
 import os
 import json
@@ -9,7 +10,12 @@ import branchbound as bb
 
 def main():
     # File to read data from
-    file_name = 'size1000.json'
+    ap = argparse.ArgumentParser()
+    ap.add_argument('-f', '--file', required=True,
+                    type=str, help='name of file in data folder')
+    args = vars(ap.parse_args())
+
+    file_name = args['file']
 
     # Path
     path = os.getcwd()

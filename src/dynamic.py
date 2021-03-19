@@ -2,7 +2,7 @@ import sys as _sys
 
 
 # TODO:
-def dynamic_2d_table(I: list, w: list, v: list, K: int) -> tuple:
+def _dynamic_2d_table(I: list, w: list, v: list, K: int) -> tuple:
     """
         Solve knapsack problem with dynamic programming.
         Memory cheap and fast approach.
@@ -19,7 +19,24 @@ def dynamic_2d_table(I: list, w: list, v: list, K: int) -> tuple:
         -------
         result : (taken items, total weight, total value)
     """
-    pass
+    # long long int knapSack(long long W, vector<long long> &wt, vector<long long> &val, int n)
+    # {
+    # long long int i, w;
+    # long long int K[2][W+1];
+    # for (i = 0; i <= n; i++)
+    # {
+    #     for (w = 0; w <= W; w++)
+    #     {
+    #         if (i==0 || w==0)
+    #             K[i%2][w] = 0;
+    #         else if (wt[i-1] <= w)
+    #                 K[i%2][w] = max(val[i-1] + K[(i-1)%2][w-wt[i-1]],  K[(i-1)%2][w]);
+    #         else
+    #                 K[i%2][w] = K[(i-1)%2][w];
+    #     }
+    # }
+    # return K[n%2][W];
+    # }
 
 
 def dynamic_recursion(I: list, w: list, v: list, K: int) -> tuple:
