@@ -1,12 +1,11 @@
 import sys as _sys
 
 
-# TODO:
-def _dynamic_2d_table(I: list, w: list, v: list, K: int) -> tuple:
+def dynamic_2rows_table(I: list, w: list, v: list, K: int) -> tuple:
     """
         Solve knapsack problem with dynamic programming.
-        Memory cheap and fast approach.
-        2d lookup table based.
+        Memory cheaper and a little faster approach.
+        2 rows table based.
 
         Parameters:
         -----------
@@ -19,24 +18,34 @@ def _dynamic_2d_table(I: list, w: list, v: list, K: int) -> tuple:
         -------
         result : (taken items, total weight, total value)
     """
-    # long long int knapSack(long long W, vector<long long> &wt, vector<long long> &val, int n)
-    # {
-    # long long int i, w;
-    # long long int K[2][W+1];
-    # for (i = 0; i <= n; i++)
-    # {
-    #     for (w = 0; w <= W; w++)
-    #     {
-    #         if (i==0 || w==0)
-    #             K[i%2][w] = 0;
-    #         else if (wt[i-1] <= w)
-    #                 K[i%2][w] = max(val[i-1] + K[(i-1)%2][w-wt[i-1]],  K[(i-1)%2][w]);
-    #         else
-    #                 K[i%2][w] = K[(i-1)%2][w];
-    #     }
-    # }
-    # return K[n%2][W];
-    # }
+    n = len(I)
+
+    taken_items = []
+
+    filled_table = [[0 for _ in range(K + 1)] for _ in range(2)]
+
+    for item in range(1, n + 1):
+        filled_table[0], filled_table[1] = filled_table[1], filled_table[0]
+
+        for weight in range(K + 1):
+            if w[item - 1] <= weight:
+                taken = v[item - 1] + filled_table[0][weight - w[item - 1]]
+                nottaken = filled_table[0][weight]
+
+                if taken > nottaken:
+                    taken_items.append(item - 1)
+                    filled_table[1][weight] = taken
+                else:
+                    filled_table[1][weight] = nottaken
+            else:
+                filled_table[1][weight] = filled_table[0][weight]
+
+    total_weight = 0
+
+    for item in taken_items:
+        total_weight += w[item]
+
+    return (taken_items, total_weight, filled_table[1][K])
 
 
 def dynamic_recursion(I: list, w: list, v: list, K: int) -> tuple:
@@ -104,7 +113,7 @@ def dynamic_recursion(I: list, w: list, v: list, K: int) -> tuple:
 def dynamic_table(I: list, w: list, v: list, K: int) -> tuple:
     """
         Solve knapsack problem with dynamic programming.
-        Memory more expensive approach.
+        Memory expensive approach.
         Fill table of size K+1 x |I|+1.
 
         Parameters:
