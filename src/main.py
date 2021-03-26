@@ -70,13 +70,14 @@ def main():
     for name in dir(bb):
         if name[:1] != '_':
             func = getattr(bb, name)
+            
+            for relaxation_func in ['simple']:
+                timer = datetime.now()
+                result = func(I, w, v, K, relaxation_func)
+                timer = str(datetime.now() - timer)
 
-            timer = datetime.now()
-            result = func(I, w, v, K)
-            timer = str(datetime.now() - timer)
-
-            results[name] = (result[2], timer)
-            print(f"{name} DONE")
+                results[name + '-' + relaxation_func] = (result[2], timer)
+                print(f"{name} with {relaxation_func} relaxation DONE")
 
     # Print results in decreasing order
     results = dict(
