@@ -20,6 +20,7 @@ def dynamic_2rows_table(I: list, w: list, v: list, K: int) -> tuple:
     """
     n = len(I)
 
+    # TODO: add backtracking ?
     taken_items = []
 
     filled_table = [[0 for _ in range(K + 1)] for _ in range(2)]
@@ -33,7 +34,6 @@ def dynamic_2rows_table(I: list, w: list, v: list, K: int) -> tuple:
                 nottaken = filled_table[0][weight]
 
                 if taken > nottaken:
-                    taken_items.append(item - 1)
                     filled_table[1][weight] = taken
                 else:
                     filled_table[1][weight] = nottaken
@@ -107,6 +107,8 @@ def dynamic_recursion(I: list, w: list, v: list, K: int) -> tuple:
     for item in taken_items:
         total_weight += w[item]
 
+    taken_items = [1 if i in taken_items else 0 for i in I]
+
     return (taken_items, total_weight, memory[K, n])
 
 
@@ -137,6 +139,8 @@ def dynamic_table(I: list, w: list, v: list, K: int) -> tuple:
     for item in backtraced:
         total_weight += w[item]
         total_value += v[item]
+
+    backtraced = [1 if i in backtraced else 0 for i in I]
 
     return (backtraced, total_weight, total_value)
 
